@@ -1,21 +1,15 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"><title>PDF→Word 免费用</title>
-</head>
-<body>
-  <h2>选 PDF → 自动下载 Word</h2>
-  <input type="file" id="f" accept=".pdf"/>
-  <script src="https://cdn.jsdelivr.net/npm/pdf2docx@0.1.2/dist/pdf2docx.min.js"></script>
-  <script>
-    document.getElementById('f').onchange = async (e) => {
-      const file = e.target.files[0];
-      const blob = await pdf2docx.convert(file);   // 调免费开源库
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = file.name.replace('.pdf','.docx');
-      a.click();
-    }
-  </script>
-</body>
-</html>
+document.getElementById('f').onchange = async (e) => {
+  const file = e.target.files[0];
+  const blob  = await pdf2docx.convert(file);
+
+  // 生成地址
+  const url   = URL.createObjectURL(blob);
+  const btn   = document.getElementById('down');
+  btn.style.display = 'inline-block';
+  btn.onclick = () => {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name.replace('.pdf','.docx');
+    a.click();
+  };
+};
