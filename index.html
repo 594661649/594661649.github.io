@@ -1,15 +1,23 @@
-document.getElementById('f').onchange = async (e) => {
-  const file = e.target.files[0];
-  const blob  = await pdf2docx.convert(file);
-
-  // 生成地址
-  const url   = URL.createObjectURL(blob);
-  const btn   = document.getElementById('down');
-  btn.style.display = 'inline-block';
-  btn.onclick = () => {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = file.name.replace('.pdf','.docx');
-    a.click();
-  };
-};
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><title>PDF→Word 免费用</title>
+</head>
+<body>
+  <h2>选 PDF → 自动下载 Word</h2>
+  <input type="file" id="f" accept=".pdf"/>
+  <!-- 换国内可访问的 CDN -->
+  <script src="https://unpkg.com/pdf2docx@0.2.0/dist/pdf2docx.min.js"></script>
+  <script>
+    document.getElementById('f').onchange = async (e) => {
+      const file = e.target.files[0];
+      const blob = await pdf2docx.convert(file);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = file.name.replace('.pdf','.docx');
+      a.style.display='none'; document.body.appendChild(a);
+      a.click(); document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>
